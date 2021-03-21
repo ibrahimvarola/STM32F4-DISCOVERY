@@ -13,14 +13,13 @@ void GPIO_Config()
 	RCC->CR |= 0x00030000;	// HSEON and HSEONRDY enable
 	while(!(RCC->CR & 0x00020000));	// HSEON Ready Flag wait
 	RCC->CR |= 0x00080000;	// CSS Enable
-	RCC->PLLCFGR |= 0x00400000;	// PLL e HSE seçtik
+	RCC->PLLCFGR |= 0x00400000;	// PLL e HSE seÃ§tik
 	RCC->PLLCFGR |= 0x00000004;	// PLL M = 4
 	RCC->PLLCFGR |= 0x00005A00;	// Pll N = 168
 	RCC->PLLCFGR |= 0x00000000;	// PLL p = 2
 	RCC->CFGR |= 0x00000000;	// AHB Prescaler = 1
 	RCC->CFGR |= 0x00080000;	// APB2 Prescaler = 2
 	RCC->CFGR |= 0x00001400;	// APB1 Prescaler = 4
-	RCC->CIR |= 0x00080000;		// HSERDY Flag clear
 	RCC->CIR |= 0x00800000;		// CSS Flag clear
 
 	RCC->AHB1ENR = 0x00000009;	// GPIOA ve GPIOD aktif
@@ -36,18 +35,18 @@ int main(void)
 	GPIO_Config();
   while (1)
   {
-	  if(GPIOA->IDR & 0x00000001)
+	  if(GPIOA->IDR & 0x00000001)  // GPIOA port is set
 	  {
-		  while(GPIOA->IDR & 0x00000001);
-		  delay(1680000);
+		  while(GPIOA->IDR & 0x00000001); // wait during GPIOA port is set 
+		  delay(1680000);                 // wait 
 
 		  count++;
 	  }
 
-	  if(count % 2 == 0)
-		  GPIOD->ODR = 0x00000000;
+	  if(count % 2 == 0)                
+		  GPIOD->ODR = 0x00000000;        // GPIOD port all pins are reset
 	  else
-		  GPIOD->ODR = 0x0000F000;
+		  GPIOD->ODR = 0x0000F000;        // GPIOD port 12,13,14 and 15 pins are set
   }
 }
 
